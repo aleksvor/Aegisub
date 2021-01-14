@@ -43,9 +43,9 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
 #include <boost/spirit/include/karma_generate.hpp>
 #include <boost/spirit/include/karma_int.hpp>
+#include <regex>
 
 using namespace boost::adaptors;
 
@@ -124,17 +124,17 @@ void AssDialogue::Parse(std::string const& raw) {
 	std::string text{tkn.next_tok().begin(), str.end()};
 
 	if (text.size() > 1 && text[0] == '{' && text[1] == '=') {
-		static const boost::regex extradata_test("^\\{(=\\d+)+\\}");
-		boost::match_results<std::string::iterator> rematch;
-		if (boost::regex_search(text.begin(), text.end(), rematch, extradata_test)) {
+		static const std::regex extradata_test("^\\{(=\\d+)+\\}");
+		std::match_results<std::string::iterator> rematch;
+		if (std::regex_search(text.begin(), text.end(), rematch, extradata_test)) {
 			std::string extradata_str = rematch.str(0);
 			text = rematch.suffix().str();
 
-			static const boost::regex idmatcher("=(\\d+)");
+			static const std::regex idmatcher("=(\\d+)");
 			auto start = extradata_str.begin();
 			auto end = extradata_str.end();
 			std::vector<uint32_t> ids;
-			while (boost::regex_search(start, end, rematch, idmatcher)) {
+			while (std::regex_search(start, end, rematch, idmatcher)) {
 				auto id = boost::lexical_cast<uint32_t>(rematch.str(1));
 				ids.push_back(id);
 				start = rematch.suffix().first;

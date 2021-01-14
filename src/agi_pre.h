@@ -72,6 +72,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <regex>
 #include <set>
 #include <string>
 #include <type_traits>
@@ -96,7 +97,6 @@
 #include <boost/range/adaptor/transformed.hpp>
 #include <boost/range/algorithm.hpp>
 #include <boost/range/irange.hpp>
-#include <boost/regex.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/interprocess/streams/bufferstream.hpp>
 #include <boost/interprocess/streams/vectorstream.hpp>

@@ -29,7 +29,7 @@
 #include <libaegisub/make_unique.h>
 
 #include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 
 #include <wx/checkbox.h>
 #include <wx/combobox.h>
@@ -44,7 +44,7 @@
 #include <wx/valgen.h>
 
 namespace {
-	const boost::regex timecode_regex("([[:digit:]]{2}):([[:digit:]]{2}):([[:digit:]]{2}):([[:digit:]]{2})");
+	const std::regex timecode_regex("([[:digit:]]{2}):([[:digit:]]{2}):([[:digit:]]{2}):([[:digit:]]{2})");
 
 	/// Validator for SMPTE timecodes
 	class TimecodeValidator final : public wxValidator {
@@ -64,7 +64,7 @@ namespace {
 			if (!ctrl) return false;
 
 			std::string str = from_wx(ctrl->GetValue());
-			boost::smatch result;
+			std::smatch result;
 			if (!regex_match(str, result, timecode_regex))
 				return false;
 

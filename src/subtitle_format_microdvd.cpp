@@ -48,7 +48,7 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 
 MicroDVDSubtitleFormat::MicroDVDSubtitleFormat()
 : SubtitleFormat("MicroDVD")
@@ -63,7 +63,7 @@ std::vector<std::string> MicroDVDSubtitleFormat::GetWriteWildcards() const {
 	return GetReadWildcards();
 }
 
-static const boost::regex line_regex(R"(^[\{\[]([0-9]+)[\}\]][\{\[]([0-9]+)[\}\]](.*)$)");
+static const std::regex line_regex(R"(^[\{\[]([0-9]+)[\}\]][\{\[]([0-9]+)[\}\]](.*)$)");
 
 bool MicroDVDSubtitleFormat::CanReadFile(agi::fs::path const& filename, std::string const& encoding) const {
 	// Return false immediately if extension is wrong
@@ -86,7 +86,7 @@ void MicroDVDSubtitleFormat::ReadFile(AssFile *target, agi::fs::path const& file
 
 	bool isFirst = true;
 	while (file.HasMoreLines()) {
-		boost::smatch match;
+		std::smatch match;
 		std::string line = file.ReadLineFromFile();
 		if (!regex_match(line, match, line_regex)) continue;
 

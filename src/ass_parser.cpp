@@ -31,8 +31,8 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
 #include <boost/variant.hpp>
+#include <regex>
 #include <unordered_map>
 
 class AssParser::HeaderToProperty {
@@ -197,10 +197,10 @@ void AssParser::ParseGraphicsLine(std::string const& data) {
 }
 
 void AssParser::ParseExtradataLine(std::string const &data) {
-	static const boost::regex matcher("Data:[[:space:]]*(\\d+),([^,]+),(.)(.*)");
-	boost::match_results<std::string::const_iterator> mr;
+	static const std::regex matcher("Data:[[:space:]]*(\\d+),([^,]+),(.)(.*)");
+	std::match_results<std::string::const_iterator> mr;
 
-	if (boost::regex_match(data, mr, matcher)) {
+	if (std::regex_match(data, mr, matcher)) {
 		auto id = boost::lexical_cast<uint32_t>(mr.str(1));
 		auto key = inline_string_decode(mr.str(2));
 		auto valuetype = mr.str(3);

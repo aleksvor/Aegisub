@@ -22,7 +22,7 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/range/adaptor/reversed.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 
 #ifdef _MSC_VER
 // Disable warnings for noreturn functions having return types
@@ -140,8 +140,8 @@ int add_stack_trace(lua_State *L) {
 
 	// Strip the location from the error message since it's redundant with
 	// the stack trace
-	boost::regex location(R"(^\[string ".*"\]:[0-9]+: )");
-	message = regex_replace(message, location, "", boost::format_first_only);
+	std::regex location(R"(^\[string ".*"\]:[0-9]+: )");
+	message = regex_replace(message, location, "", std::regex_constants::format_first_only);
 
 	std::vector<std::string> frames;
 	frames.emplace_back(std::move(message));

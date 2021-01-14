@@ -48,7 +48,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 
 DEFINE_EXCEPTION(SRTParseError, SubtitleFormatParseError);
 
@@ -126,14 +126,14 @@ class SrtTagParser {
 		std::string color;
 	};
 
-	const boost::regex tag_matcher;
-	const boost::regex attrib_matcher;
-	const boost::regex is_quoted;
+	const std::regex tag_matcher;
+	const std::regex attrib_matcher;
+	const std::regex is_quoted;
 
 public:
 	SrtTagParser()
-	: tag_matcher("^(.*?)<(/?b|/?i|/?u|/?s|/?font)([^>]*)>(.*)$", boost::regex::icase)
-	, attrib_matcher(R"(^[[:space:]]+(face|size|color)=('[^']*'|"[^"]*"|[^[:space:]]+))", boost::regex::icase)
+	: tag_matcher("^(.*?)<(/?b|/?i|/?u|/?s|/?font)([^>]*)>(.*)$", std::regex::icase)
+	, attrib_matcher(R"(^[[:space:]]+(face|size|color)=('[^']*'|"[^"]*"|[^[:space:]]+))", std::regex::icase)
 	, is_quoted(R"(^(['"]).*\1$)")
 	{
 	}
@@ -150,7 +150,7 @@ public:
 
 		while (!srt.empty())
 		{
-			boost::smatch result;
+			std::smatch result;
 			if (!regex_match(srt, result, tag_matcher))
 			{
 				// no more tags could be matched, end of string
@@ -190,7 +190,7 @@ public:
 						old_attribs = font_stack.back();
 					new_attribs = old_attribs;
 					// now find all attributes on this font tag
-					boost::smatch result;
+					std::smatch result;
 					while (regex_search(tag_attrs, result, attrib_matcher))
 					{
 						// get attribute name and values
@@ -314,7 +314,7 @@ void SRTSubtitleFormat::ReadFile(AssFile *target, agi::fs::path const& filename,
 	// See parsing algorithm at <http://devel.aegisub.org/wiki/SubtitleFormats/SRT>
 
 	// "hh:mm:ss,fff --> hh:mm:ss,fff" (e.g. "00:00:04,070 --> 00:00:10,04")
-	const boost::regex timestamp_regex("^([0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2},[0-9]{1,}) --> ([0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2},[0-9]{1,})");
+	const std::regex timestamp_regex("^([0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2},[0-9]{1,}) --> ([0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2},[0-9]{1,})");
 
 	SrtTagParser tag_parser;
 
@@ -328,7 +328,7 @@ void SRTSubtitleFormat::ReadFile(AssFile *target, agi::fs::path const& filename,
 		++line_num;
 		boost::trim(text_line);
 
-		boost::smatch timestamp_match;
+		std::smatch timestamp_match;
 		bool found_timestamps = false;
 		switch (state) {
 			case ParseState::INITIAL:

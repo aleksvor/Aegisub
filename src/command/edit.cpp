@@ -62,8 +62,8 @@
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/adaptor/sliced.hpp>
 #include <boost/range/adaptor/transformed.hpp>
-#include <boost/regex.hpp>
 #include <boost/tokenizer.hpp>
+#include <regex>
 
 #include <wx/clipbrd.h>
 #include <wx/fontdlg.h>
@@ -928,11 +928,11 @@ struct edit_line_paste_over final : public Command {
 
 namespace {
 std::string trim_text(std::string text) {
-	boost::regex start(R"(^( |	|\\[nNh])+)");
-	boost::regex end(R"(( |	|\\[nNh])+$)");
+	std::regex start(R"(^( |	|\\[nNh])+)");
+	std::regex end(R"(( |	|\\[nNh])+$)");
 
-	text = regex_replace(text, start, "", boost::format_first_only);
-	text = regex_replace(text, end, "", boost::format_first_only);
+	text = regex_replace(text, start, "", std::regex_constants::format_first_only);
+	text = regex_replace(text, end, "", std::regex_constants::format_first_only);
 	return text;
 }
 
