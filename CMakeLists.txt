@@ -506,8 +506,8 @@ find_package(ass REQUIRED)
 target_include_directories(Aegisub PRIVATE ${ass_INCLUDE_DIRS})
 target_link_libraries(Aegisub LINK_PRIVATE ${ass_LIBRARIES})
 
-find_package(Boost REQUIRED container filesystem locale regex thread)
-target_link_libraries(libaegisub PRIVATE "Boost::locale" "Boost::regex" "Boost::thread")
+find_package(Boost REQUIRED container filesystem locale regex)
+target_link_libraries(libaegisub PRIVATE "Boost::locale" "Boost::regex")
 target_link_libraries(libaegisub PUBLIC "Boost::headers" "Boost::container" "Boost::filesystem")
 target_link_libraries(Aegisub PRIVATE "Boost::headers" "Boost::container" "Boost::filesystem" "Boost::locale" "Boost::regex")
 
